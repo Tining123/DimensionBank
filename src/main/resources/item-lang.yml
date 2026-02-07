@@ -1,0 +1,7 @@
+# DimensionBank item language file
+# key = Material enum name (1.7.10)
+# value = display name shown to players
+
+items:
+  STONE: "石头"
+  IRON_INGOT: "铁锭"

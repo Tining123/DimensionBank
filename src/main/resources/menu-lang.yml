@@ -1,0 +1,147 @@
+bank:
+  delete_failed: "Failed to delete old file: %path%"
+  rename_failed: "Atomic save failed (renameTo=false): %path%"
+  save_failed: "Failed to save bank file: %error%"
+
+core:
+  bank_disabled: "Bank system is disabled (bank-enable=false). The plugin will load, but core features will not be enabled."
+  vanilla_loaded: "Vanilla item registry loaded. Count=%count%"
+  command_missing: "Command /db is not registered in plugin.yml!"
+  enabled: "DimensionBank has been enabled!"
+  disabled: "DimensionBank has been disabled!"
+  bank_dir_created: "Bank directory created: %path%"
+  bank_dir_failed: "Failed to create bank directory: %path%"
+  lang_generated: "Default lang.yml generated: %path%"
+  lang_save_failed: "Failed to save default lang.yml: %error%"
+  lang_loaded: "lang.yml loaded"
+  itemlang_disabled: "item-lang is disabled"
+  itemlang_generated: "Default item-lang.yml generated: %path%"
+  itemlang_save_failed: "Failed to save item-lang.yml: %error%"
+  itemlang_loaded: "item-lang.yml loaded"
+  itemlang_flush_failed: "Failed to save item-lang.yml: %error%"
+
+command:
+  help:
+    title: "DimensionBank - Usage:"
+    list: "/db list <page> List vanilla items (paged)"
+    reload: "/db reload Reload config and rebuild item list"
+    bal: "/db bal [page] View your bank balance"
+    open: "/db open [page] Open withdraw menu"
+    save: "/db save Deposit held item"
+    saveall: "/db saveall Deposit held item (including similar items)"
+    take: "/db take Withdraw 1 stack of held item"
+    takeall: "/db takeall Withdraw multiple stacks"
+    version: "/db version Show version"
+  reload:
+    success: "Configuration reloaded and item list rebuilt. Count=%count%"
+    no_permission: "You do not have permission."
+  list:
+    title: "Vanilla Item List Page %page%/%max% (Total %total%)"
+    empty: "(This page is empty)"
+  bal:
+    only_player: "This command can only be used in-game."
+    empty: "Your bank is empty."
+    title: "Bank Balance Page %page%/%max% (Total %total% types)"
+  open:
+    only_player: "This command can only be used in-game."
+  save:
+    only_player: "This command can only be used in-game."
+    no_item: "You are not holding any item."
+    deny: "This item is not allowed to be deposited."
+    invalid: "This item does not meet deposit rules (may contain enchantments/custom data)."
+    failed: "Failed to deposit item."
+    success: "Deposited %name% (%id%) ×%amount% | Balance: %total%"
+  saveall:
+    only_player: "This command can only be used in-game."
+    no_item: "You are not holding any item."
+    deny: "This item is not allowed to be deposited."
+    empty: "No similar items can be deposited (may contain enchantments/custom data)."
+    success: "Deposited %name% (%id%) ×%amount% | Balance: %total%"
+  take:
+    only_player: "This command can only be used in-game."
+    cooldown: "On cooldown (%ms%ms)"
+    need_item: "You must hold an item to specify the withdrawal type."
+    no_balance: "No balance for this item in bank."
+    success: "Withdrawn %name% (%id%) ×%amount%"
+  takeall:
+    only_player: "This command can only be used in-game."
+    cooldown: "On cooldown (%ms%ms)"
+    need_item: "You must hold an item to specify the withdrawal type."
+    disabled: "takeall is disabled in configuration."
+    no_balance: "No balance for this item in bank."
+    success: "Withdrawn %name% (%id%) ×%amount%"
+  version:
+    title: "Version: %ver%"
+    author: "Author: Tining"
+    core: "Core: Bank + GUI + Search + Sort"
+  unknown: "Unknown subcommand. Use /db for help."
+
+menu:
+  withdraw:
+    balance: "Balance: ×%amount%"
+    full_drop: "Inventory is full. Some items were dropped on the ground."
+    inv_full_cannot_withdraw: "Inventory is full. Cannot withdraw."
+    insufficient_balance: "Insufficient balance for this item."
+    title: "DimensionBank - Withdraw"
+    left: "Left Click: Withdraw 1 stack"
+    right: "Right Click: Withdraw multiple stacks (limited)"
+
+  search:
+    cleared: "Search cleared."
+    prompt: "Enter search keyword (valid for %sec% seconds). Type %cmd% to clear."
+    none: "(None)"
+    status: "Search: %value%"
+    empty: "No matching results"
+    tip_input: "§bLeft-click Compass: Enter search"
+    tip_clear: "§cRight-click Compass: Clear search (show all)"
+    title: "§bCompass: Search / Clear"
+    current: "§7Current filter: §f%filter%"
+
+  sort:
+    amount_desc: "Amount ↓"
+    amount_asc: "Amount ↑"
+    name_az: "A-Z"
+    name_za: "Z-A"
+    changed: "Sort mode changed to: %mode%"
+    title: "§dSort: §f%mode%"
+    tip_left: "§7Left-click to switch sort mode"
+    hint_amount: "§7- Amount ↓: Show highest first"
+    hint_name: "§7- A-Z: Sort by name"
+
+  page:
+    prev: "§a← Previous"
+    prev_lore: "§7Go to previous page"
+    next: "§aNext →"
+    next_lore: "§7Go to next page"
+
+  info:
+    search: "§7Search: §f%filter%"
+    page: "§ePage %page%"
+    balance: "§7Show only items with balance"
+    left_click: "§7Left-click: 1 stack; Right-click: multiple stacks"
+    search_left: "§bLeft-click Compass: Search"
+    search_right: "§cRight-click Compass: Clear search"
+    close: "§7Press ESC to close"
+
+  cooldown: "On cooldown (%ms%ms)"
+
+  deposit:
+    confirm: "Click again within 5 seconds to confirm deposit of all items."
+    slot_not_allowed: "This slot does not allow depositing."
+    deny: "This item is not allowed to be deposited."
+    invalid: "This item does not meet deposit rules."
+    slot_ok: "Deposited %name% (%id%) ×%amount% | Balance: %total%"
+    item_changed: "Item has changed. Deposit cancelled."
+    all_empty: "No items can be deposited."
+    all_ok: "All items deposited: Moved=%moved%, Ignored=%ignored%"
+    title: "DimensionBank - Deposit"
+    help: "How to Deposit"
+    help_line1: "Left-click an inventory item to deposit into this slot"
+    help_line2: "Left-click the hopper to deposit all valid items"
+    help_line3: "Invalid items will be ignored"
+    funnel: "Deposit Hopper"
+    funnel_left: "Left-click: Deposit all valid items"
+    funnel_confirm: "Confirmation required (double click)"
+    slot_left: "Left-click inventory item: Deposit into slot"
+    close: "Close"
+    close_line: "Click to close"

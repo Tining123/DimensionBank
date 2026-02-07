@@ -1,0 +1,11 @@
+name: DimensionBank
+main: org.tining.dimensionbank.DimensionBank
+version: 1.1
+author: Tining
+description: "DimensionBank: 跨维度银行系统"
+commands:
+  db:
+    description: "管理跨维度资产"
+    usage: "/db <command>"
+    aliases:
+      - dimensionbank

@@ -1,0 +1,146 @@
+# ============================================================
+# DimensionBank Main Configuration File
+# ============================================================
+# This file controls the core behavior of the DimensionBank
+# cross-dimension storage and banking system.
+#
+# Please restart or reload the plugin after modifying.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Storage Path
+# ------------------------------------------------------------
+# Directory used to store player bank data files.
+# Relative paths are resolved from the plugin folder.
+#
+# Example:
+# ./DimensionBank/data/
+#
+bank-path: ./DimensionBank/data/
+
+
+# ------------------------------------------------------------
+# Bank System
+# ------------------------------------------------------------
+# Enable or disable the entire banking system.
+# If disabled, the plugin will still load, but core features
+# (deposit / withdraw / GUI) will be unavailable.
+#
+bank-enable: true
+
+
+# ------------------------------------------------------------
+# Deposit Tax System
+# ------------------------------------------------------------
+# Apply a percentage-based tax when players deposit items.
+# Useful for economic balance.
+#
+# rate = tax percentage (0.01 = 1%)
+#
+tax:
+  enable: false
+  rate: 0.01   # 1%
+
+# ------------------------------------------------------------
+# Operation Cooldown
+# ------------------------------------------------------------
+# Cooldown between deposit / withdraw operations.
+# Unit: milliseconds (recommended).
+#
+# Example:
+# 500  = 0.5 second
+# 1000 = 1 second
+#
+cooldown-ms: 1000
+
+
+# Legacy field (seconds).
+# Kept for backward compatibility.
+# Will be ignored if cooldown-ms is present.
+#
+cooldown: 3
+
+
+# ------------------------------------------------------------
+# Denied Items
+# ------------------------------------------------------------
+# Items listed here cannot be deposited into the bank.
+# Use Bukkit Material enum names (uppercase).
+#
+deny-items:
+  - BEDROCK
+  - COMMAND_BLOCK
+  - BARRIER
+
+
+# ------------------------------------------------------------
+# Vanilla Item Validation
+# ------------------------------------------------------------
+# If enabled, only "pure" vanilla items are allowed.
+#
+# Disallows:
+# - Enchanted items
+# - Renamed items
+# - Custom NBT items
+# - Plugin-modified items
+#
+only-pure-vanilla: true
+
+
+# ------------------------------------------------------------
+# Withdraw Behavior
+# ------------------------------------------------------------
+# Controls how players withdraw items from the bank.
+#
+withdraw:
+
+  # Number of stacks withdrawn with LEFT click.
+  # (1 stack = max stack size of the item)
+  #
+  left-click-stacks: 1
+
+
+  # Enable multi-stack withdraw with RIGHT click.
+  #
+  right-click-enable: true
+
+
+  # Maximum stacks per RIGHT click.
+  # Used to prevent massive entity drops and lag.
+  #
+  right-click-max-stacks: 2   # Max 2 stacks per operation
+
+
+  # Drop items on the ground if inventory is full.
+  # If false, withdraw will be limited by free slots.
+  #
+  drop-if-full: true
+
+
+# ------------------------------------------------------------
+# Item Language System (item-lang.yml)
+# ------------------------------------------------------------
+# Controls material display name translation.
+#
+# Used for:
+# - GUI display
+# - Command output
+# - Search matching
+#
+item-lang:
+
+  # Enable item language system.
+  #
+  enable: false
+
+
+  # File name for item translations.
+  #
+  file: item-lang.yml
+
+
+  # Automatically generate missing entries.
+  # Missing items will be written using prettyEnglish format.
+  #
+  auto-fill: true
