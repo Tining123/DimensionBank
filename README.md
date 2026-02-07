@@ -1,8 +1,5 @@
 # DimensionBank
 
-A cross-dimension bank system for Minecraft 1.7.10 servers.  
-一个面向 1.7.10 老版本服务器的跨世界银行插件。
-
 ---
 
 ## 📦 Features | 功能特性
