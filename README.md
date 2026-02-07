@@ -15,17 +15,7 @@ A cross-dimension bank system for Minecraft 1.7.10 servers.
 - ✅ Menu language support（菜单国际化）
 - ✅ Cooldown protection（操作冷却保护）
 - ✅ Lightweight file storage（轻量文件存储）
-
----
-
-## ⚙️ Environment | 运行环境
-
-| Item | Requirement |
-|------|-------------|
-| Minecraft | 1.7.10 |
-| Server | Spigot / Thermos / Cauldron |
-| Java | Java 8 |
-| Dependency | None |
+- ✅ bStats statistics（匿名统计支持）
 
 ---
 
