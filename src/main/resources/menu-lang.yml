@@ -145,3 +145,5 @@ menu:
     slot_left: "Left-click inventory item: Deposit into slot"
     close: "Close"
     close_line: "Click to close"
+    type_cap: "Deposit failed: Your bank has reached the maximum category limit (%max% types)."
+    id_blocked: "Item ID=%id% is not allowed to deposit"

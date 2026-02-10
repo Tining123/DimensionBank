@@ -137,3 +137,5 @@ menu:
     slot_left: "左键物品栏物品：存入该格"
     close: "关闭"
     close_line: "点击关闭"
+    type_cap: "存入失败：你的银行已达到最大种类上限（%max% 种）"
+    id_blocked: "该物品 ID=%id% 不允许存入"

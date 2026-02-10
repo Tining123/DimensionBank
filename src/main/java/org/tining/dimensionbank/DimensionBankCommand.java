@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -347,6 +348,36 @@ public final class DimensionBankCommand implements CommandExecutor {
                 return true;
             }
 
+            // ===== 种类上限检测 =====
+            if (!plugin.getBank().canAddNewType(p.getName(), hand.getType())) {
+
+                int max = plugin.getConfig()
+                        .getInt("deposit.max-types.value", 100);
+
+                p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
+                        "menu.deposit.type_cap",
+                        "存入失败：你的银行已达到最大种类上限（%max% 种）",
+                        "%max%", String.valueOf(max)
+                ));
+
+                return true;
+            }
+
+            // ===== ID 段检测 =====
+            if (!plugin.isIdAllowed(hand.getType())) {
+
+                int id = hand.getType().getId();
+
+                p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
+                        "menu.deposit.id_blocked",
+                        "该物品 ID=%id% 不允许存入",
+                        "%id%", String.valueOf(id)
+                ));
+
+                return true;
+            }
+
+
             // 扣手上数量
             int remain = amountInHand - deposit;
             if (remain <= 0) {
@@ -406,6 +437,36 @@ public final class DimensionBankCommand implements CommandExecutor {
                 ));
                 return true;
             }
+
+            // ===== 种类上限检测 =====
+            if (!plugin.getBank().canAddNewType(p.getName(), hand.getType())) {
+
+                int max = plugin.getConfig()
+                        .getInt("deposit.max-types.value", 100);
+
+                p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
+                        "menu.deposit.type_cap",
+                        "存入失败：你的银行已达到最大种类上限（%max% 种）",
+                        "%max%", String.valueOf(max)
+                ));
+
+                return true;
+            }
+
+            // ===== ID 段检测 =====
+            if (!plugin.isIdAllowed(hand.getType())) {
+
+                int id = hand.getType().getId();
+
+                p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
+                        "menu.deposit.id_blocked",
+                        "该物品 ID=%id% 不允许存入",
+                        "%id%", String.valueOf(id)
+                ));
+
+                return true;
+            }
+
 
             boolean onlyPure = plugin.getPluginConfig().getBoolean("only-pure-vanilla", true);
 
@@ -643,5 +704,6 @@ public final class DimensionBankCommand implements CommandExecutor {
 
         }
     }
+
 
 }

@@ -2,10 +2,12 @@ package org.tining.dimensionbank;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.List;
 
 public final class DimensionBank extends JavaPlugin {
 
@@ -106,6 +108,74 @@ public final class DimensionBank extends JavaPlugin {
         ));
     }
 
+
+    private boolean matchRanges(int id, List<String> ranges) {
+
+        if (ranges == null) return false;
+
+        for (String s : ranges) {
+            if (s == null) continue;
+
+            s = s.trim();
+            if (s.length() == 0) continue;
+
+            int dash = s.indexOf('-');
+
+            try {
+                if (dash < 0) {
+                    // 单个数字
+                    int v = Integer.parseInt(s);
+                    if (id == v) return true;
+
+                } else {
+                    // 区间
+                    int a = Integer.parseInt(s.substring(0, dash).trim());
+                    int b = Integer.parseInt(s.substring(dash + 1).trim());
+
+                    if (a > b) {
+                        int t = a; a = b; b = t;
+                    }
+
+                    if (id >= a && id <= b) return true;
+                }
+
+            } catch (Throwable ignored) {}
+        }
+
+        return false;
+    }
+
+    public boolean isIdAllowed(Material m) {
+
+        if (m == null) return false;
+
+        int id = m.getId(); // 1.7.10 可用
+
+        boolean enable = getConfig()
+                .getBoolean("deposit.id-range.enable", true);
+
+        if (!enable) return true;
+
+        List<String> deny = getConfig()
+                .getStringList("deposit.id-range.deny");
+
+        List<String> allow = getConfig()
+                .getStringList("deposit.id-range.allow");
+
+        // 黑名单优先
+        if (matchRanges(id, deny)) {
+            return false;
+        }
+
+        // 白名单
+        if (allow != null && !allow.isEmpty()) {
+            return matchRanges(id, allow);
+        }
+
+        // 没配置 allow 就全放行
+        return true;
+    }
+
     private void initBankFolder() {
         String path = config.getString("bank-path", "./DimensionBank/data/");
         bankFolder = new File(path);
@@ -128,6 +198,7 @@ public final class DimensionBank extends JavaPlugin {
             }
         }
     }
+
 
     public static DimensionBank getInstance() {
         return instance;

@@ -61,6 +61,20 @@ cooldown-ms: 1000
 #
 cooldown: 3
 
+# max storage kinds
+deposit:
+  max-types:
+    enable: true
+    value: 300
+
+  id-range:
+    enable: true
+    allow:
+      - "1-4095"
+    deny:
+      - "7"          # bedrock
+#      - "137-210"    # example
+
 
 # ------------------------------------------------------------
 # Denied Items

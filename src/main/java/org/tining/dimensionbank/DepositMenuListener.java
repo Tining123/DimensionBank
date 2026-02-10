@@ -111,6 +111,19 @@ public final class DepositMenuListener implements Listener {
      */
     private void depositSlot(Player p, int slotIndex, ItemStack clicked) {
 
+        // 获取当前玩家的种类数
+        int currentTypes = plugin.getBank().countTypes(p.getName());
+        int maxTypes = plugin.getConfig().getInt("deposit.max-types.value", 100); // 从配置中读取最大种类数
+
+        // 如果启用最大种类数限制，并且当前种类数已达到上限，阻止存入
+        if (plugin.getConfig().getBoolean("deposit.max-types.enable", true) && currentTypes >= maxTypes) {
+            p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
+                    "menu.deposit.type_cap", "存入失败：你的银行已达到最大种类上限（%max% 种）",
+                    "%max%", String.valueOf(maxTypes)
+            ));
+            return;
+        }
+
         // 只处理背包+快捷栏
         if (slotIndex < 0 || slotIndex > 35) {
             p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
@@ -131,6 +144,20 @@ public final class DepositMenuListener implements Listener {
             p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
                     "menu.deposit.deny", "该物品禁止存入。"
             ));
+            return;
+        }
+
+        // ===== ID 段检测 =====
+        if (!plugin.isIdAllowed(type)) {
+
+            int id = type.getId();
+
+            p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
+                    "menu.deposit.id_blocked",
+                    "该物品 ID=%id% 不允许存入",
+                    "%id%", String.valueOf(id)
+            ));
+
             return;
         }
 
@@ -193,6 +220,19 @@ public final class DepositMenuListener implements Listener {
      */
     private void depositAll(Player p) {
 
+        // 获取当前玩家的种类数
+        int currentTypes = plugin.getBank().countTypes(p.getName());
+        int maxTypes = plugin.getConfig().getInt("deposit.max-types.value", 100); // 从配置中读取最大种类数
+
+        // 如果启用最大种类数限制，并且当前种类数已达到上限，阻止存入
+        if (plugin.getConfig().getBoolean("deposit.max-types.enable", true) && currentTypes >= maxTypes) {
+            p.sendMessage("§c[DimensionBank] " + plugin.getMenuLang().tr(
+                    "menu.deposit.type_cap", "存入失败：你的银行已达到最大种类上限（%max% 种）",
+                    "%max%", String.valueOf(maxTypes)
+            ));
+            return;
+        }
+
         ItemStack[] contents = p.getInventory().getContents();
 
         List<String> deny = plugin.getConfig().getStringList("deny-items");
@@ -210,6 +250,13 @@ public final class DepositMenuListener implements Listener {
             if (it == null || it.getType() == null || it.getType() == Material.AIR) continue;
 
             Material type = it.getType();
+
+            // ID 段限制
+            if (!plugin.isIdAllowed(type)) {
+                ignored += it.getAmount();
+                continue;
+            }
+
 
             // deny
             if (deny != null && deny.contains(type.name())) {

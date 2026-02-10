@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -115,7 +116,9 @@ public final class BankManager {
 
     /**
      * 增加数量（可为负，但不会低于 0）
-     * 返回：实际增加后的新数量
+     * 返回：实际更新后的新数量
+     *
+     * 重要：当数量变成 0 时，会删除该 key，避免 yml 无限增长
      */
     public long addAmount(String playerName, Material material, long delta) {
         if (material == null) return 0L;
@@ -127,33 +130,55 @@ public final class BankManager {
         long now = old + delta;
         if (now < 0L) now = 0L;
 
-        y.set(key, now);
-        save(playerName, y);
+        if (now == 0L) {
+            y.set(key, null); // ✅ 删除这一行，防止 items 下堆积大量 :0
+        } else {
+            y.set(key, now);
+        }
 
+        save(playerName, y);
         return now;
     }
 
+
     /**
      * 尝试扣除数量，返回实际扣除的数量
+     *
+     * 当数量归零时自动删除 key，避免 yml 膨胀
      */
     public long takeAmount(String playerName, Material material, long want) {
         if (material == null) return 0L;
-        if (want <= 0) return 0L;
+        if (want <= 0L) return 0L;
 
         YamlConfiguration y = load(playerName);
 
         String key = "items." + material.name();
         long old = y.getLong(key, 0L);
+
         long take = Math.min(old, want);
+        if (take <= 0L) return 0L;
 
         long now = old - take;
         if (now < 0L) now = 0L;
 
-        y.set(key, now);
-        save(playerName, y);
+        if (now == 0L) {
+            y.set(key, null); // ✅ 删除
+        } else {
+            y.set(key, now);
+        }
 
+        save(playerName, y);
         return take;
     }
+
+    public int countTypes(String playerName) {
+        YamlConfiguration y = load(playerName);
+
+        if (y.getConfigurationSection("items") == null) return 0;
+
+        return y.getConfigurationSection("items").getKeys(false).size();
+    }
+
 
     /**
      * 返回玩家所有非零库存（Material.name -> amount）
@@ -172,4 +197,30 @@ public final class BankManager {
 
         return out;
     }
+
+    /**
+     * 判断是否可以增加新物品
+     * @param player
+     * @param m
+     * @return
+     */
+    public boolean canAddNewType(String player, Material m) {
+
+        long old = getAmount(player, m); // 你已有的话就用，没有我可以给你补
+        if (old > 0) return true; // 已存在，不算新种类
+
+        boolean enable = plugin.getConfig()
+                .getBoolean("deposit.max-types.enable", true);
+
+        if (!enable) return true;
+
+        int max = plugin.getConfig()
+                .getInt("deposit.max-types.value", 100);
+
+        int cur = countTypes(player);
+
+        return cur < max;
+    }
+
+
 }
